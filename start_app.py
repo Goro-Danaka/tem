@@ -1,5 +1,5 @@
 from providers.browsers.request_browser import Browser
-from shopify.product_fields import ProductFields
+from shopify.shopify_products_fields import ProductFields
 
 if __name__ == '__main__':
     product_url = 'https://silobeauty.com/collections/face/products/24k-gold-beauty-bar-pulse-facial-roller'
