@@ -1,28 +1,37 @@
 from lxml import html
 from providers.logging_provider import LoggingProvider
 
+from shopify.shopify_product import SProduct
+
 
 class SProducts:
 
+    page_url_tail = '?page=%s'
     product_links_xpath = '//a[@class="grid-product__image-link"]'
     next_page_xpath = '//span[@class="next"]/a'
     base_url = None
 
     def __init__(self, browser):
         self.browser = browser
+        self.product_provider = SProduct(browser=browser)
         self.lp = LoggingProvider()
 
     def get_products(self, base_url, category_url):
-        page_number = 0
+        page_number = 1
+        products_info_list = list({})
         has_next_page = True
         self.base_url = base_url
-        content = self.browser.get_html(category_url)
-        content_tree = html.fromstring(content)
         while has_next_page:
+            full_category_url = base_url + category_url + self.page_url_tail % page_number
+            content = self.browser.get_html(full_category_url)
+            content_tree = html.fromstring(content)
             has_next_page = self.has_next_page(content_tree)
             product_urls = self.get_product_urls(content_tree)
             for product_url in product_urls:
-                pass
+                product_info = self.product_provider.get_product_info(product_url)
+                products_info_list.append(product_info)
+            page_number += 1
+        return products_info_list
 
     def has_next_page(self, content_tree):
         next_page = content_tree.xpath(self.next_page_xpath)

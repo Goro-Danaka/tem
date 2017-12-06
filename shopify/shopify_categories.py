@@ -43,6 +43,7 @@ class SCategories:
                     'link': category_link
                 }
                 categories_info.append(category_info)
+                i += 1
         except Exception as ex:
             self.lp.critical('Can\'t get categories info.'
                              ' links: \n%s; titles: \n%s; Exception: \n%s'

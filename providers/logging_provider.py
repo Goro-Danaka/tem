@@ -7,7 +7,6 @@ import queue
 
 class LoggingProvider:
 
-    
     class __LoggingProvider:
         use_print = True
 
