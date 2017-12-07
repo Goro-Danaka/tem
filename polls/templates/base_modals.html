@@ -1,0 +1,95 @@
+{% extends "base_page_header.html" %}
+
+{% block add_website_modal %}
+<div class="modal fade" id="AddWebsiteModal" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Add a Website</h4>
+        </div>
+        <div class="modal-body">
+            <label for="website_name">Website name:</label>
+            <div class="input-group-btn">
+                <input id="website_name" type="text" class="form-control" placeholder="Example">
+            </div>
+            <label for="website_url">Website URL:</label>
+            <div class="input-group-btn">
+                <input id="website_url" type="text" class="form-control" placeholder="http://example.com">
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button id="save_website" class="btn btn-size btn-success pull-left">Save</button>
+          <button id="cancel_save_website" class="btn btn-size btn-warning pull-right" data-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block delete_confirm_modal %}
+<div class="modal fade" id="DeleteConfirmModal" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Deleting a Website</h4>
+        </div>
+        <div class="modal-body">
+            <h4>
+                You have selected to delete this website.
+            </h4>
+            <h4>
+                If this was the action that you wanted to do, please confirm your choice, or cancel and return to the page.
+            </h4>
+        </div>
+        <div class="modal-footer">
+          <button id="cancel_delete_website" class="btn btn-size btn-success pull-left" data-dismiss="modal">Cancel</button>
+          <button id="delete_website" class="btn btn-size btn-danger pull-right">Delete</button>
+        </div>
+      </div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block scraper_settings_modal %}
+<div class="modal fade" id="ScraperSettingsModal" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Scraper settings</h4>
+        </div>
+        <div class="modal-body">
+            <label for="update_period">Update every:</label>
+            <select class="form-control" id="update_period">
+                <option value="hour">Hour</option>
+                <option value="day">Day</option>
+                <option value="week">Week</option>
+                <option value="month">Month</option>
+                <option value="year">Year</option>
+            </select>
+        </div>
+        <div class="modal-footer">
+          <button id="save_settings" class="btn btn-size btn-success pull-left">Save</button>
+          <button id="cancel_save_settings" class="btn btn-size btn-warning pull-right" data-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block add_button %}
+<button id="add_button" class="btn btn-size btn-primary pull-right" data-toggle="modal" data-target="#AddWebsiteModal">Add</button>
+{% endblock %}
+
+{% block delete_button %}
+<button id="delete_button" class="btn btn-size btn-danger pull-right" data-toggle="modal" data-target="#DeleteConfirmModal">Delete</button>
+{% endblock %}
+
+{% block scraper_settings_button %}
+<button id="scraper_settings_button" class="btn btn-size btn-primary pull-right" data-toggle="modal" data-target="#ScraperSettingsModal">Settings</button>
+{% endblock %}
