@@ -81,6 +81,7 @@ class SProduct:
             'Available': is_product_available
         }
 
+        self.lp.info('Scraped product: %s' % product_url)
         return product_meta_info
 
     def _is_product_available(self, content_tree):
