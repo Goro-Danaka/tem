@@ -7,8 +7,8 @@ from providers.logging_provider import LoggingProvider
 
 class SCategories:
 
-    categories_links_xpath = '//a[@class="collection-grid__item-link collection-collage__item-wrapper"]'
-    categories_titles_xpath = '//span[@class="collection-grid__item-title"]'
+    _categories_links_xpath = '//a[@class="collection-grid__item-link collection-collage__item-wrapper"]'
+    _categories_titles_xpath = '//span[@class="collection-grid__item-title"]'
 
     def __init__(self, browser):
         self.lp = LoggingProvider()
@@ -16,18 +16,18 @@ class SCategories:
 
     def get_categories(self, url):
         try:
-            url = SCategories.get_categories_page(url)
+            url += defaults['products_url']
             content = self.browser.get_html(url)
             content_tree = html.fromstring(content)
-            categories_links = content_tree.xpath(self.categories_links_xpath)
-            categories_titles = content_tree.xpath(self.categories_titles_xpath)
-            categories = self.get_categories_info(categories_links, categories_titles)
+            categories_links = content_tree.xpath(self._categories_links_xpath)
+            categories_titles = content_tree.xpath(self._categories_titles_xpath)
+            categories = self._get_categories_info(categories_links, categories_titles)
         except Exception as ex:
             self.lp.critical('Can\'t get categories. Url: %s; Exception: \n%s' % (url, ex))
         finally:
             return categories
 
-    def get_categories_info(self, categories_links, categories_titles):
+    def _get_categories_info(self, categories_links, categories_titles):
         categories_info = list()
         i = 0
         try:
@@ -51,8 +51,3 @@ class SCategories:
         finally:
             return categories_info
 
-    @staticmethod
-    def get_categories_page(url):
-        if re.match(defaults['products_url_template'], url):
-            return url
-        return url + defaults['products_url']
