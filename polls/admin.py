@@ -1,4 +1,4 @@
 from django.contrib import admin
-from polls.models import PitchUpScraperModel
+from polls.models import ShopifySiteModel
 
-admin.site.register(PitchUpScraperModel)
+admin.site.register(ShopifySiteModel)

@@ -52,8 +52,7 @@ INSTALLED_APPS = [
     'polls',
     'bootstrap3',
     'jquery',
-    'scripts.pitchup',
-    'scripts.caravancampingsales'
+    'shopify.shopify_scraper'
 ]
 
 MIDDLEWARE = [
@@ -88,8 +87,6 @@ TEMPLATES = [
 ]
 
 TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
-
-PHANTOMJS_PATH = os.environ.get('PHANTOMJS_PATH')
 
 WSGI_APPLICATION = 'scraperapp.wsgi.application'
 
