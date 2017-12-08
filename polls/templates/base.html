@@ -6,7 +6,6 @@
 {% load static %}
 
 <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}" />
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.5.3/js/bootstrapValidator.js"></script>
 <body>
 <div class="container">
     {% csrf_token %}
@@ -15,7 +14,7 @@
     {% block delete_confirm_modal %}{% endblock %}
     {% block scraper_settings_modal %}{% endblock %}
     {% block websites_table %}{% endblock %}
-    <div class="col-xs-12 col-sm-12 navigation-control">
+    <div class="col-xs-12 col-sm-12 navigation-control" style="margin-bottom: 20px;">
         {% block progress_bar %}{% endblock %}
         <div>
             {% block add_button %}{% endblock %}
@@ -23,7 +22,6 @@
             {% block scraper_settings_button %}{% endblock %}
             {% block start_stop_buttons%}{% endblock %}
         </div>
-
     </div>
     <script>
     $(document).ready(function() {
