@@ -1,0 +1,34 @@
+{% extends "base_modals.html" %}
+
+{% block websites_table %}
+<table class="table" id="websites_table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>URL</th>
+      <th>Total products</th>
+      <th>Last update</th>
+      <th>Last status</th>
+      <th>State</th>
+      <th>Select</th>
+    </tr>
+  </thead>
+  <tbody>
+{% for website in website_list %}
+    <tr id="{{ website.id }}">
+      <td id="name">{{ website.name }}</td>
+      <td id="url">{{ website.url }}</td>
+      <td id="total_products">{{ website.total_products }}</td>
+      <td id="last_update_date">{{ website.last_update_date }}</td>
+      <td id="last_status">{{ website.last_status }}</td>
+      <td id="state">None</td>
+      <td id="select">
+        <div class="checkbox">
+          <input type="checkbox" value="">
+        </div>
+      </td>
+    </tr>
+{% endfor %}
+  </tbody>
+</table>
+{% endblock %}

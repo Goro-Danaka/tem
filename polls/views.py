@@ -10,9 +10,8 @@ from wsgiref.util import FileWrapper
 from polls.models import ShopifySiteModel
 
 
-
 def index(request):
-    scripts_list = ShopifySiteModel.objects.order_by('-name')[:5]
+    websites_list = ShopifySiteModel.objects.order_by('-name')[:5]
     if request.method == 'POST':
         request_paths = {
             '/status/': status,
@@ -23,7 +22,7 @@ def index(request):
         return request_paths[request.path](request)
 
     context = {
-        'scripts_list': scripts_list if scripts_list else None,
+        'website_list': websites_list if websites_list else None,
         'in_progress': ''
     }
 

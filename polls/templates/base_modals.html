@@ -9,21 +9,22 @@
           <h4 class="modal-title">Add a Website</h4>
         </div>
         <div class="modal-body">
-            <label for="website_name">Website name:</label>
-            <div class="input-group-btn">
-                <input id="website_name" type="text" class="form-control" placeholder="Example">
-            </div>
-            <label for="website_url">Website URL:</label>
-            <div class="input-group-btn">
-                <input id="website_url" type="text" class="form-control" placeholder="http://example.com">
-            </div>
+            <form id="add_website_from">
+                <label for="website_name">Website name:</label>
+                <div class="input-group-btn">
+                    <input id="website_name" type="text" class="form-control" placeholder="Example">
+                </div>
+                <label for="website_url">Website URL:</label>
+                <div class="input-group-btn">
+                    <input id="website_url" type="text" class="form-control" placeholder="http://example.com">
+                </div>
+            </form>
         </div>
         <div class="modal-footer">
           <button id="save_website" class="btn btn-size btn-success pull-left">Save</button>
           <button id="cancel_save_website" class="btn btn-size btn-warning pull-right" data-dismiss="modal">Cancel</button>
         </div>
       </div>
-
     </div>
 </div>
 {% endblock %}
@@ -49,7 +50,6 @@
           <button id="delete_website" class="btn btn-size btn-danger pull-right">Delete</button>
         </div>
       </div>
-
     </div>
 </div>
 {% endblock %}
@@ -82,14 +82,116 @@
 </div>
 {% endblock %}
 
+{% block start_stop_buttons%}
+<button id="stop_scraper" class="btn btn-size btn-primary pull-right" style="margin-left:5px;">Stop</button>
+<button id="start_scraper" class="btn btn-size btn-primary pull-right" style="margin-left:5px;">Start</button>
+{% endblock %}
+
 {% block add_button %}
-<button id="add_button" class="btn btn-size btn-primary pull-right" data-toggle="modal" data-target="#AddWebsiteModal">Add</button>
+<button id="add_button" class="btn btn-size btn-primary pull-left" data-toggle="modal" data-target="#AddWebsiteModal">Add</button>
 {% endblock %}
 
 {% block delete_button %}
-<button id="delete_button" class="btn btn-size btn-danger pull-right" data-toggle="modal" data-target="#DeleteConfirmModal">Delete</button>
+<button id="delete_button" class="btn btn-size btn-danger pull-left" style="margin-left:5px;" data-toggle="modal" data-target="#DeleteConfirmModal">Delete</button>
 {% endblock %}
 
 {% block scraper_settings_button %}
-<button id="scraper_settings_button" class="btn btn-size btn-primary pull-right" data-toggle="modal" data-target="#ScraperSettingsModal">Settings</button>
+<button id="scraper_settings_button" class="btn btn-size btn-primary pull-right" style="margin-left:5px;" data-toggle="modal" data-target="#ScraperSettingsModal">Settings</button>
+{% endblock %}
+
+{% block modal_buttons_handlers %}
+
+function isUrlValid(website_url) {
+    var res = website_url.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g);
+    if(res == null)
+        return false;
+    else
+        return true;
+}
+
+function isNameValid(website_name) {
+    length = website_name.length
+    if(length > 0 && website_name)
+        return true;
+    else
+        return false;
+}
+
+$("#website_name").on('input', function() {
+    var website_name_element = $('#website_name');
+    var website_name = website_name_element.val();
+    var is_valid_website_name = isNameValid(website_name);
+    if (is_valid_website_name)
+        website_name_element.closest('.input-group-btn').addClass("has-success").removeClass("has-error");
+    else
+        website_name_element.closest('.input-group-btn').removeClass("has-success").addClass("has-error");
+});
+
+$("#website_url").on('input', function() {
+    var website_url_element = $('#website_url');
+    var website_url = website_url_element.val();
+    var is_valid_website_url = isUrlValid(website_url);
+    if (is_valid_website_url)
+        website_url_element.closest('.input-group-btn').addClass("has-success").removeClass("has-error");
+    else
+        website_url_element.closest('.input-group-btn').removeClass("has-success").addClass("has-error");
+});
+
+$("#save_website").click(function(event){
+    var website_name = $('#website_name').val();
+    var website_url = $('#website_url').val();
+    if (!isUrlValid(website_url) || !isNameValid(website_name))
+        return;
+    var csrf = $('input[name="csrfmiddlewaretoken"]').val();
+    $.ajax({
+         type:"POST",
+         url:"add/",
+         data: {
+                'website_name': website_name,
+                'website_url': website_url,
+                'csrfmiddlewaretoken': csrf,
+                },
+         success: function (data) {
+         }
+    });
+});
+
+$("#start_button").click(function(event){
+    var selected_script = $('#scrapers').find(":selected").val();
+    var csrf = $('input[name="csrfmiddlewaretoken"]').val();
+    $('#logs').append(selected_script + ' script job started.\n');
+    $.ajax({
+         type:"POST",
+         url:"start/",
+         data: {
+                'selected_script': selected_script,
+                'csrfmiddlewaretoken': csrf,
+                },
+         complete: function() {
+             $('#logs').append(selected_script + ' script job completed.\n');
+         }
+    });
+});
+
+$("#download").click(function(event){
+    var file_name = $('.list-group-item.active').text();
+    var csrf = $('input[name="csrfmiddlewaretoken"]').val();
+    $.ajax({
+         type:"POST",
+         url:"download/",
+         data: {
+                'file_name': file_name,
+                'csrfmiddlewaretoken': csrf,
+                },
+         success: function (data) {
+              var element = document.createElement('a');
+                element.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(data));
+                element.setAttribute('download', file_name);
+                element.style.display = 'none';
+                document.body.appendChild(element);
+                element.click();
+                document.body.removeChild(element);
+         }
+    });
+});
 {% endblock %}

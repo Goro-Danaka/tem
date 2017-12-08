@@ -6,43 +6,28 @@
 {% load static %}
 
 <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.5.3/js/bootstrapValidator.js"></script>
 <body>
 <div class="container">
-    {% block page_header %}
-    {% endblock %}
+    {% csrf_token %}
+    {% block page_header %}{% endblock %}
     {% block add_website_modal %}{% endblock %}
     {% block delete_confirm_modal %}{% endblock %}
     {% block scraper_settings_modal %}{% endblock %}
-    <div class="form-group nav-padding">
-      <label for="scrapes">Select scraper script:</label>
-        {% csrf_token %}
-      <select class="form-control" id="scrapers">
-        {% if scripts_list %}
-            {% for script in scripts_list %}
-                <option value="{{ script.name }}">{{ script.name }}</option>
-            {% endfor %}
-        {% else %}
-            <option>No scripts are available.</option>
-        {% endif %}
-      </select>
-    </div>
-    <div class="form-group nav-padding">
-      <label for="logs">Logs:</label>
-      <textarea class="form-control" rows="10" id="logs"></textarea>
-    </div>
+    {% block websites_table %}{% endblock %}
     <div class="col-xs-12 col-sm-12 navigation-control">
-        <div class="progress" style="display: none;">
-          <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">
-              Job in progress
-          </div>
+        {% block progress_bar %}{% endblock %}
+        <div>
+            {% block add_button %}{% endblock %}
+            {% block delete_button %}{% endblock %}
+            {% block scraper_settings_button %}{% endblock %}
+            {% block start_stop_buttons%}{% endblock %}
         </div>
-        <button id="start_button" class="btn btn-size btn-default pull-left">Start</button>
-        {% block add_button %}{% endblock %}
-        {% block delete_button %}{% endblock %}
-        {% block scraper_settings_button %}{% endblock %}
+
     </div>
     <script>
     $(document).ready(function() {
+    {% block modal_buttons_handlers %}{% endblock %}
         function update_status(in_progress, messages, result_files){
           if (in_progress) {
             $('#start_button').prop('disabled', true);
@@ -114,25 +99,6 @@
                         document.body.appendChild(element);
                         element.click();
                         document.body.removeChild(element);
-                 }
-            });
-       });
-
-       $("#delete").click(function(event){
-            var selected_script = $('#scrapers').find(":selected").val();
-            var csrf = $('input[name="csrfmiddlewaretoken"]').val();
-            $.ajax({
-                 type:"POST",
-                 url:"delete/",
-                 data: {
-                        'selected_script': selected_script,
-                        'file_id': file_id,
-                        'csrfmiddlewaretoken': csrf,
-                        },
-                 success: function (data) {
-                    if ($(file).parent().length) {
-                     alert('yes')
-                     }
                  }
             });
        });
