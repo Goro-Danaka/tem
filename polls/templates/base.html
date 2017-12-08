@@ -24,101 +24,46 @@
         </div>
     </div>
     <script>
-    $(document).ready(function() {
-    {% block modal_buttons_handlers %}{% endblock %}
-        function update_status(in_progress, messages, result_files){
-          if (in_progress) {
-            $('#start_button').prop('disabled', true);
-            $('#results_button').prop('disabled', true);
-            $('#scrapers').prop( "disabled", true);
-            $('.progress').show()
-          }
-          else {
-            $('#start_button').prop('disabled', false);
-            $('#results_button').prop('disabled', false);
-            $('#scrapers').prop( "disabled", false);
-            $('.progress').hide()
-          }
-          if (messages !== null){
-            $('#logs').append(messages);
-          }
-          $('.list-group-item').remove();
+$(document).ready(function() {
+{% block modal_buttons_handlers %}{% endblock %}
+{% block table_scripts %}{% endblock %}
+    function update_status(in_progress, messages, result_files){
+      if (in_progress) {
+        $('#start_button').prop('disabled', true);
+        $('#results_button').prop('disabled', true);
+        $('#scrapers').prop( "disabled", true);
+        $('.progress').show()
+      }
+      else {
+        $('#start_button').prop('disabled', false);
+        $('#results_button').prop('disabled', false);
+        $('#scrapers').prop( "disabled", false);
+        $('.progress').hide()
+      }
+      if (messages !== null){
+        $('#logs').append(messages);
+      }
+      $('.list-group-item').remove();
 
-          for (var i=0; i < result_files.length; i++){
-            if (i == 0) {
-               $("#filesList").append('<a href="#" class="list-group-item active">'+result_files[i]+'</a>');
-            }
-            else {
-               $("#filesList").append('<a href="#" class="list-group-item">'+result_files[i]+'</a>');
-            }
-          }
-
-          $('.list-group-item').click(function() {
-            var $this = $(this);
-
-            $('.active').removeClass('active');
-            $this.toggleClass('active')
-          })
+      for (var i=0; i < result_files.length; i++){
+        if (i == 0) {
+           $("#filesList").append('<a href="#" class="list-group-item active">'+result_files[i]+'</a>');
         }
+        else {
+           $("#filesList").append('<a href="#" class="list-group-item">'+result_files[i]+'</a>');
+        }
+      }
+
+      $('.list-group-item').click(function() {
+        var $this = $(this);
+
+        $('.active').removeClass('active');
+        $this.toggleClass('active')
+      })
+    }
 
 
-       $("#start_button").click(function(event){
-            var selected_script = $('#scrapers').find(":selected").val();
-            var csrf = $('input[name="csrfmiddlewaretoken"]').val();
-            $('#logs').append(selected_script + ' script job started.\n');
-            $.ajax({
-                 type:"POST",
-                 url:"start/",
-                 data: {
-                        'selected_script': selected_script,
-                        'csrfmiddlewaretoken': csrf,
-                        },
-                 complete: function() {
-                     $('#logs').append(selected_script + ' script job completed.\n');
-                 }
-            });
-        });
-
-        $("#download").click(function(event){
-            var file_name = $('.list-group-item.active').text();
-            var csrf = $('input[name="csrfmiddlewaretoken"]').val();
-            $.ajax({
-                 type:"POST",
-                 url:"download/",
-                 data: {
-                        'file_name': file_name,
-                        'csrfmiddlewaretoken': csrf,
-                        },
-                 success: function (data) {
-                      var element = document.createElement('a');
-                        element.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(data));
-                        element.setAttribute('download', file_name);
-                        element.style.display = 'none';
-                        document.body.appendChild(element);
-                        element.click();
-                        document.body.removeChild(element);
-                 }
-            });
-       });
-
-       (function get_status() {
-          var csrf = $('input[name="csrfmiddlewaretoken"]').val();
-          $.ajax({
-            type: "POST",
-            url: 'status/',
-            data: {'csrfmiddlewaretoken': csrf },
-            success: function(data) {
-              var in_progress = data['in_progress']
-              var messages = data['messages']
-              var result_files = data['result_files']
-              update_status(in_progress, messages, result_files)
-            },
-            complete: function() {
-              setTimeout(get_status, 5000);
-            }
-          });
-        })();
-    });
+});
 </script>
 </div>
 </body>

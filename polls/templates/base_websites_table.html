@@ -32,3 +32,41 @@
   </tbody>
 </table>
 {% endblock %}
+
+{% block table_scripts %}
+  $('.checkbox').change(function(){
+      var checkbox_list = $(":checkbox");
+      var is_checked = false;
+      for (var i=0; i < checkbox_list.length; i++){
+        if(checkbox_list[i].checked){
+          is_checked = true;
+        }
+      }
+      if (is_checked)
+        $('#delete_button').prop('disabled', false);
+      else
+        $('#delete_button').prop('disabled', true);
+  });
+
+  $("#start_button").click(function(event){
+    var csrf = $('input[name="csrfmiddlewaretoken"]').val();
+    $.ajax({
+         type:"POST",
+         url:"start/",
+         data: {
+            'csrfmiddlewaretoken': csrf,
+         },
+    });
+  });
+
+  $("#stop_button").click(function(event){
+    var csrf = $('input[name="csrfmiddlewaretoken"]').val();
+    $.ajax({
+         type:"POST",
+         url:"stop/",
+         data: {
+            'csrfmiddlewaretoken': csrf,
+         },
+    });
+  });
+{% endblock %}

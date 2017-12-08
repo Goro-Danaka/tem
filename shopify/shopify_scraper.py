@@ -7,6 +7,7 @@ from shopify.shopify_product import SProduct
 
 from urllib.parse import urlparse
 from providers.logging_provider import LoggingProvider
+from providers.request_browser import Browser
 
 
 class ShopifyScraper:
@@ -14,13 +15,19 @@ class ShopifyScraper:
     _robots_url_tile = '/robots.txt'
     _is_shopify_regex = '(\\/)(\\d+)(\\/)(checkouts)'
 
-    def __init__(self, browser, url='https://9gifts.net/lol/test'):
-        domain_url = ShopifyScraper._get_url_domain(url)
-        self.browser = browser
+    _categories_provider = None
+    _products_provider = None
+    _product_provider = None
+
+    def __init__(self):
+        self.browser = Browser()
         self.lp = LoggingProvider()
-        self.categories_provider = SCategories(browser=browser)
-        self.products_provider = SProducts(browser=browser)
-        self.product_provider = SProduct(browser=browser)
+
+    def start(self, url):
+        domain_url = ShopifyScraper._get_url_domain(url)
+        self._categories_provider = SCategories(browser=self.browser)
+        self._products_provider = SProducts(browser=self.browser)
+        self._product_provider = SProduct(browser=self.browser)
         self.scrape_categories(domain_url)
 
     def scrape_categories(self, url):
@@ -29,10 +36,10 @@ class ShopifyScraper:
         if not is_shopify:
             self.lp.critical('Site: "%s" is not shopify based. Skipped.' % url)
             return all_products_list
-        categories = self.categories_provider.get_categories(url=url)
+        categories = self._categories_provider.get_categories(url=url)
         for category in categories:
             self.lp.info('Scraper category: %s' % category['title'])
-            products = self.products_provider.get_products(url, category['link'])
+            products = self._products_provider.get_products(url, category['link'])
             all_products_list.extend(products)
         return all_products_list
 

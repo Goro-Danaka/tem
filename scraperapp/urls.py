@@ -19,6 +19,7 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^$', include('polls.urls')),
     url(r'^start/', include('polls.urls')),
+    url(r'^stop/', include('polls.urls')),
     url(r'^add/', include('polls.urls')),
     url(r'^delete/', include('polls.urls')),
     url(r'^status/', include('polls.urls')),
