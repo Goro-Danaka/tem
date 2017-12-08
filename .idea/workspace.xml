@@ -3,15 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="f325fee5-bf64-4d7f-9354-185ebfbe54a3" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db.sqlite3" afterPath="$PROJECT_DIR$/db.sqlite3" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/polls/admin.py" afterPath="$PROJECT_DIR$/polls/admin.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/polls/models.py" afterPath="$PROJECT_DIR$/polls/models.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/polls/templates/base.html" afterPath="$PROJECT_DIR$/polls/templates/base.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/polls/templates/base_modals.html" afterPath="$PROJECT_DIR$/polls/templates/base_modals.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/polls/templates/base_websites_table.html" afterPath="$PROJECT_DIR$/polls/templates/base_websites_table.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/polls/urls.py" afterPath="$PROJECT_DIR$/polls/urls.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/polls/views.py" afterPath="$PROJECT_DIR$/polls/views.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/scraperapp/urls.py" afterPath="$PROJECT_DIR$/scraperapp/urls.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shopify/shopify_scraper.py" afterPath="$PROJECT_DIR$/shopify/shopify_scraper.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -25,13 +17,13 @@
       <content type="file-editors">
         <state>
           <leaf>
-            <file leaf-file-name="base_modals.html" pinned="false" current-in-tab="false">
+            <file leaf-file-name="base_modals.html" pinned="false" current-in-tab="true">
               <entry file="file://$PROJECT_DIR$/polls/templates/base_modals.html">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="451">
-                    <caret line="217" column="7" lean-forward="false" selection-start-line="217" selection-start-column="7" selection-end-line="217" selection-end-column="7" />
+                  <state relative-caret-position="230">
+                    <caret line="209" column="49" lean-forward="true" selection-start-line="209" selection-start-column="49" selection-end-line="209" selection-end-column="49" />
                     <folding>
-                      <element signature="e#296#303#1" expanded="true" />
+                      <element signature="e#322#329#1" expanded="true" />
                       <element signature="n#style#0;n#button#0;n#!!top" expanded="true" />
                       <element signature="n#style#0;n#button#1;n#!!top" expanded="true" />
                       <element signature="n#style#0;n#button#3;n#!!top" expanded="true" />
@@ -44,18 +36,18 @@
             <file leaf-file-name="base_websites_table.html" pinned="false" current-in-tab="false">
               <entry file="file://$PROJECT_DIR$/polls/templates/base_websites_table.html">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="952">
-                    <caret line="56" column="40" lean-forward="false" selection-start-line="56" selection-start-column="40" selection-end-line="56" selection-end-column="40" />
+                  <state relative-caret-position="306">
+                    <caret line="45" column="8" lean-forward="false" selection-start-line="45" selection-start-column="8" selection-end-line="45" selection-end-column="52" />
                     <folding />
                   </state>
                 </provider>
               </entry>
             </file>
-            <file leaf-file-name="base.html" pinned="false" current-in-tab="true">
+            <file leaf-file-name="base.html" pinned="false" current-in-tab="false">
               <entry file="file://$PROJECT_DIR$/polls/templates/base.html">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="417">
-                    <caret line="64" column="0" lean-forward="true" selection-start-line="64" selection-start-column="0" selection-end-line="64" selection-end-column="0" />
+                  <state relative-caret-position="349">
+                    <caret line="39" column="48" lean-forward="true" selection-start-line="39" selection-start-column="48" selection-end-line="39" selection-end-column="48" />
                     <folding>
                       <element signature="n#style#0;n#div#0;n#div#0;n#body#0;n#!!top" expanded="true" />
                     </folding>
@@ -124,16 +116,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="result_enum.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/polls/result_enum.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="8" column="0" lean-forward="false" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="6" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/polls/urls.py">
           <provider selected="true" editor-type-id="text-editor">
@@ -146,11 +128,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="shopify_scraper.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="shopify_scraper.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/shopify/shopify_scraper.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-274">
-              <caret line="19" column="9" lean-forward="false" selection-start-line="19" selection-start-column="9" selection-end-line="19" selection-end-column="9" />
+            <state relative-caret-position="185">
+              <caret line="46" column="0" lean-forward="false" selection-start-line="46" selection-start-column="0" selection-end-line="46" selection-end-column="0" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -168,14 +150,24 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/polls/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="163">
-              <caret line="10" column="25" lean-forward="false" selection-start-line="10" selection-start-column="25" selection-end-line="10" selection-end-column="25" />
+            <state relative-caret-position="10">
+              <caret line="40" column="0" lean-forward="false" selection-start-line="40" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="exception.py" pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36-32/Lib/site-packages/django/core/handlers/exception.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="180">
+              <caret line="40" column="0" lean-forward="false" selection-start-line="40" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -245,13 +237,13 @@
         <option value="$PROJECT_DIR$/scraperapp/urls.py" />
         <option value="$PROJECT_DIR$/polls/urls.py" />
         <option value="$PROJECT_DIR$/polls/views.py" />
-        <option value="$PROJECT_DIR$/polls/templates/base_modals.html" />
         <option value="$PROJECT_DIR$/shopify/shopify_scraper.py" />
         <option value="$PROJECT_DIR$/polls/templates/base.html" />
+        <option value="$PROJECT_DIR$/polls/templates/base_modals.html" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="-1429" />
     <option name="y" value="94" />
     <option name="width" value="1366" />
@@ -366,7 +358,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1288" y="-8" width="1296" height="1000" extended-state="6" />
+    <frame x="-1288" y="-8" width="1296" height="1000" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20711975" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -421,7 +413,7 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="36" />
+      <option name="time" value="38" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -640,14 +632,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36-32/Lib/site-packages/django/core/handlers/exception.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="50">
-          <caret line="40" column="0" lean-forward="false" selection-start-line="40" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36-32/Lib/site-packages/django/core/handlers/base.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="42">
@@ -817,54 +801,62 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/polls/templates/base_websites_table.html">
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36-32/Lib/site-packages/django/core/handlers/exception.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="952">
-          <caret line="56" column="40" lean-forward="false" selection-start-line="56" selection-start-column="40" selection-end-line="56" selection-end-column="40" />
+        <state relative-caret-position="180">
+          <caret line="40" column="0" lean-forward="false" selection-start-line="40" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/polls/templates/base_modals.html">
+    <entry file="file://$PROJECT_DIR$/polls/templates/base.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="451">
-          <caret line="217" column="7" lean-forward="false" selection-start-line="217" selection-start-column="7" selection-end-line="217" selection-end-column="7" />
+        <state relative-caret-position="349">
+          <caret line="39" column="48" lean-forward="true" selection-start-line="39" selection-start-column="48" selection-end-line="39" selection-end-column="48" />
           <folding>
-            <element signature="e#296#303#1" expanded="true" />
-            <element signature="n#style#0;n#button#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#button#1;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#button#3;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#button#4;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/polls/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="163">
-          <caret line="10" column="25" lean-forward="false" selection-start-line="10" selection-start-column="25" selection-end-line="10" selection-end-column="25" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#0;n#body#0;n#!!top" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/shopify/shopify_scraper.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-274">
-          <caret line="19" column="9" lean-forward="false" selection-start-line="19" selection-start-column="9" selection-end-line="19" selection-end-column="9" />
+        <state relative-caret-position="185">
+          <caret line="46" column="0" lean-forward="false" selection-start-line="46" selection-start-column="0" selection-end-line="46" selection-end-column="0" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/polls/templates/base.html">
+    <entry file="file://$PROJECT_DIR$/polls/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="417">
-          <caret line="64" column="0" lean-forward="true" selection-start-line="64" selection-start-column="0" selection-end-line="64" selection-end-column="0" />
+        <state relative-caret-position="10">
+          <caret line="40" column="0" lean-forward="false" selection-start-line="40" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
           <folding>
-            <element signature="n#style#0;n#div#0;n#div#0;n#body#0;n#!!top" expanded="true" />
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/polls/templates/base_websites_table.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="45" column="8" lean-forward="false" selection-start-line="45" selection-start-column="8" selection-end-line="45" selection-end-column="52" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/polls/templates/base_modals.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="230">
+          <caret line="209" column="49" lean-forward="true" selection-start-line="209" selection-start-column="49" selection-end-line="209" selection-end-column="49" />
+          <folding>
+            <element signature="e#322#329#1" expanded="true" />
+            <element signature="n#style#0;n#button#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#button#1;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#button#3;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#button#4;n#!!top" expanded="true" />
           </folding>
         </state>
       </provider>

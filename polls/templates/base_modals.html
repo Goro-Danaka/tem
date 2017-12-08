@@ -5,7 +5,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <button type="button" id="dismiss_save_website" class="close" data-dismiss="modal">&times;</button>
           <h4 class="modal-title">Add a Website</h4>
         </div>
         <div class="modal-body">
@@ -34,7 +34,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <button id="dismiss_delete_website" type="button" class="close" data-dismiss="modal">&times;</button>
           <h4 class="modal-title">Deleting a Website</h4>
         </div>
         <div class="modal-body">
@@ -119,6 +119,30 @@ function isNameValid(website_name) {
         return false;
 }
 
+function disableAddModalButtons(){
+    $('#dismiss_save_website').prop('disabled', true);
+    $('#save_website').prop('disabled', true);
+    $('#cancel_save_website').prop('disabled', true);
+}
+
+function enableAddModalButtons(){
+    $('#dismiss_save_website').prop('disabled', false);
+    $('#save_website').prop('disabled', false);
+    $('#cancel_save_website').prop('disabled', false);
+}
+
+function disableDeleteModalButtons(){
+    $('#dismiss_delete_website').prop('disabled', true);
+    $('#delete_website').prop('disabled', true);
+    $('#cancel_delete_website').prop('disabled', true);
+}
+
+function enableDeleteModalButtons(){
+    $('#dismiss_delete_website').prop('disabled', false);
+    $('#delete_website').prop('disabled', false);
+    $('#cancel_delete_website').prop('disabled', false);
+}
+
 $("#website_name").on('input', function() {
     var website_name_element = $('#website_name');
     var website_name = website_name_element.val();
@@ -144,6 +168,7 @@ $("#save_website").click(function(event){
     var website_url = $('#website_url').val();
     if (!isUrlValid(website_url) || !isNameValid(website_name))
         return;
+    disableAddModalButtons();
     var csrf = $('input[name="csrfmiddlewaretoken"]').val();
     $.ajax({
          type:"POST",
@@ -155,8 +180,11 @@ $("#save_website").click(function(event){
                 },
          success: function (response) {
             var success = response['success']
-            if (!success)
-                alert('Website already added!');
+            if (!success){
+                var message = response['message']
+                enableAddModalButtons();
+                alert(message);
+            }
             else{
                 $('#AddWebsiteModal').modal('hide');
                 location.reload();
@@ -164,6 +192,7 @@ $("#save_website").click(function(event){
          }
     });
 });
+
 
 $("#delete_website").click(function(event){
     var ids_to_delete = []
@@ -173,6 +202,7 @@ $("#delete_website").click(function(event){
         var id_to_delete = checked_list[i].value;
         ids_to_delete.push(id_to_delete)
     }
+    disableDeleteModalButtons();
     $.ajax({
          type:"POST",
          url:"delete/",
@@ -187,7 +217,9 @@ $("#delete_website").click(function(event){
                 location.reload();
             }
             else{
-                alert('Something went wrong!');
+                enableDeleteModalButtons();
+                var message = response['message']
+                alert(message);
             }
          }
     });
