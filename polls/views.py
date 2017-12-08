@@ -58,6 +58,23 @@ def add(request):
         return response
 
 
+def delete(request):
+    response = HttpResponse(content_type='application/json')
+    result = {}
+    try:
+        ids_to_delete = request.POST.getlist('ids_to_delete[]')
+        for id_to_delete in ids_to_delete:
+            website = ShopifySiteModel.objects.get(id=id_to_delete)
+            website.delete()
+        result['success'] = True
+    except Exception as ex:
+        result['success'] = False
+    finally:
+        json_result = json.dumps(result)
+        response.write(json_result)
+        return response
+
+
 def start(request):
     #selected_script = request.POST['selected_script']
     #scraper.select_script(selected_script)
@@ -80,15 +97,6 @@ def download(request):
     #    response['Content-Length'] = os.path.getsize(result_file_path)
     #    return response
     pass
-
-
-def delete(request):
-    #json_status = scraper.get_status()
-    #response = HttpResponse(content_type='application/json')
-    #response.write(json_status)
-    #return response
-    pass
-
 
 def status(request):
     #json_status = scraper.get_status()

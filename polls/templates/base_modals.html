@@ -72,6 +72,10 @@
                 <option value="month">Month</option>
                 <option value="year">Year</option>
             </select>
+            <label for="get_proxy_list_api_key">Proxy API key:</label>
+            <div class="input-group-btn">
+                <input id="get_proxy_list_api_key" type="text" class="form-control" placeholder="3d482b92d5ad93f5f6547e98db9cf977748a4f49">
+            </div>
         </div>
         <div class="modal-footer">
           <button id="save_settings" class="btn btn-size btn-success pull-left">Save</button>
@@ -165,7 +169,31 @@ $("#save_website").click(function(event){
 });
 
 $("#delete_website").click(function(event){
+    var ids_to_delete = []
+    var csrf = $('input[name="csrfmiddlewaretoken"]').val();
     var checked_list = $('#select input:checked');
+    for (var i=0; i < checked_list.length; i++){
+        var id_to_delete = checked_list[i].value;
+        ids_to_delete.push(id_to_delete)
+    }
+    $.ajax({
+         type:"POST",
+         url:"delete/",
+         data: {
+                'ids_to_delete[]': ids_to_delete,
+                'csrfmiddlewaretoken': csrf,
+                },
+         success: function (response) {
+            var success = response['success']
+            if (success){
+                $('#DeleteConfirmModal').modal('hide');
+                location.reload();
+            }
+            else{
+                alert('Something went wrong!');
+            }
+         }
+    });
 });
 
 
