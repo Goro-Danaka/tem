@@ -1,5 +1,4 @@
 import json
-import time
 
 from django.http import HttpResponse
 from django.shortcuts import render
@@ -9,7 +8,7 @@ from polls.models import ShopifySettingsModel
 
 from shopify.shopify_scraper import ShopifyScraper
 
-scraper = ShopifyScraper()
+_scraper = ShopifyScraper()
 
 
 def index(request):
@@ -48,7 +47,7 @@ def add(request):
                 is_exist = True
                 break
         if not is_exist:
-            is_shopify_site = scraper.is_shopify_site(website_url)
+            is_shopify_site = _scraper.is_shopify_site(website_url)
             if is_shopify_site:
                 new_website = ShopifySiteModel(name=website_name, url=website_url)
                 new_website.save()
@@ -108,9 +107,8 @@ def start(request):
     response = HttpResponse(content_type='application/json')
     try:
         for website in websites_list:
-            scraper.start(website.url)
-        result['success'] = False
-        result['message'] = 'Website with this URL or name already exist!'
+            _scraper.start(website.url)
+        result['success'] = True
     except Exception as ex:
         result['success'] = False
         result['message'] = 'Exception was thrown: "%s"' % ex
@@ -122,13 +120,13 @@ def start(request):
 
 def stop(request):
     response = HttpResponse(content_type='application/json')
-    scraper.stop()
+    _scraper.stop()
     return response
 
 
 def status(request):
-    #json_status = scraper.get_status()
-    #response = HttpResponse(content_type='application/json')
-    #response.write(json_status)
-    #return response
-    pass
+    json_status = json.dumps(_scraper.get_status())
+    response = HttpResponse(content_type='application/json')
+    response.write(json_status)
+    return response
+

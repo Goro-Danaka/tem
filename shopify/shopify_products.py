@@ -44,13 +44,20 @@ class SProducts:
         return products_info_list
 
     def _has_next_page(self, content_tree):
-        next_page = content_tree.xpath(self._next_page_xpath)
-        if next_page and len(next_page):
-            if not next_page[-1].text.isdigit():
-                return True
+        result = False
+        try:
+            next_page = content_tree.xpath(self._next_page_xpath)
+            if next_page and len(next_page):
+                if not next_page[-1].text or not next_page[-1].text.isdigit():
+                    result = True
+                else:
+                    result = False
             else:
-                return False
-        return False
+                result = False
+        except Exception as ex:
+            self.lp.warning('Can\'t get next page. Exception: "%s"' % ex)
+        finally:
+            return result
 
     def _get_product_urls(self, content_tree):
         product_urls = list()

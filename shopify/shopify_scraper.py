@@ -1,10 +1,12 @@
 import re
 
+from datetime import datetime
+from urllib.parse import urlparse
+
 from shopify.shopify_categories import SCategories
 from shopify.shopify_products import SProducts
 from shopify.shopify_product import SProduct
 
-from urllib.parse import urlparse
 from providers.logging_provider import LoggingProvider
 from providers.request_browser import Browser
 
@@ -21,19 +23,47 @@ class ShopifyScraper:
     _lp = None
 
     _in_progress = False
+    _is_job_finished = True
+    _is_success = True
+    _url = None
+    _last_update_date = None
+    _total_products = 0
 
     def __init__(self):
         self._browser = Browser()
         self._lp = LoggingProvider()
 
     def start(self, url):
-        self._in_progress = True
-        domain_url = ShopifyScraper._get_url_domain(url)
-        self._categories_provider = SCategories(browser=self._browser)
-        self._products_provider = SProducts(browser=self._browser)
-        self._product_provider = SProduct(browser=self._browser)
-        self.scrape_categories(domain_url)
+        try:
+            self.set_init_states()
+            self._in_progress = True
+            self._is_job_finished = False
+            self._is_success = False
+            self._url = url
+            domain_url = ShopifyScraper._get_url_domain(url)
+            self._categories_provider = SCategories(browser=self._browser)
+            self._products_provider = SProducts(browser=self._browser)
+            self._product_provider = SProduct(browser=self._browser)
+            all_products_list = self.scrape_categories(domain_url)
+            self._in_progress = False
+            self._is_job_finished = True
+            self._is_success = True
+        except Exception as ex:
+            self._lp.warning('Exception was thrown while scraping URL: "%s", Exception: \n"%s"' % (url, ex))
+            self._is_job_finished = True
+            self._in_progress = False
+            self._is_success = False
+        finally:
+            self._last_update_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            self._total_products = len(all_products_list)
+
+    def set_init_states(self):
         self._in_progress = False
+        self._is_job_finished = True
+        self._is_success = True
+        self._url = None
+        self._last_update_date = None
+        self._total_products = 0
 
     def scrape_categories(self, url):
         all_products_list = list()
@@ -66,10 +96,13 @@ class ShopifyScraper:
 
     def get_status(self):
         status = {
-            'in_progress': self._in_progress
+            'is_job_finished': self._is_job_finished,
+            'url': self._url,
+            'success': self._is_success,
+            'last_update_date': self._last_update_date,
+            'total_products': self._total_products
         }
         return status
-
 
     @staticmethod
     def _get_url_domain(url):

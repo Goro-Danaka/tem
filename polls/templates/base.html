@@ -27,41 +27,63 @@
 $(document).ready(function() {
 {% block modal_buttons_handlers %}{% endblock %}
 {% block table_scripts %}{% endblock %}
-    function update_status(in_progress, messages, result_files){
-      if (in_progress) {
-        $('#start_button').prop('disabled', true);
-        $('#results_button').prop('disabled', true);
-        $('#scrapers').prop( "disabled", true);
-        $('.progress').show()
-      }
-      else {
-        $('#start_button').prop('disabled', false);
-        $('#results_button').prop('disabled', false);
-        $('#scrapers').prop( "disabled", false);
-        $('.progress').hide()
-      }
-      if (messages !== null){
-        $('#logs').append(messages);
-      }
-      $('.list-group-item').remove();
 
-      for (var i=0; i < result_files.length; i++){
-        if (i == 0) {
-           $("#filesList").append('<a href="#" class="list-group-item active">'+result_files[i]+'</a>');
-        }
-        else {
-           $("#filesList").append('<a href="#" class="list-group-item">'+result_files[i]+'</a>');
+function update_status(is_job_finished, url, success, last_update_date, total_products){
+  if (is_job_finished) {
+        setEnable();
+  }
+  else {
+        setDisable();
+  }
+}
+
+function setEnable(){
+    var checkbox_list = $(":checkbox");
+    var is_checked = false;
+    for (var i=0; i < checkbox_list.length; i++){
+        if(checkbox_list[i].checked){
+          is_checked = true;
         }
       }
+    $('#start_scraper').prop('disabled', false);
+    $('#stop_scraper').prop('disabled', true);
+    $('#add_button').prop( "disabled", false);
+    if (is_checked)
+        $('#delete_button').prop("disabled", false);
+    $('#scraper_settings_button').prop( "disabled", false);
+    $('#select_checkbox').prop( "disabled", false);
+    $('.progress').hide();
+}
 
-      $('.list-group-item').click(function() {
-        var $this = $(this);
+function setDisable(){
+    $('#start_scraper').prop('disabled', true);
+    $('#stop_scraper').prop('disabled', false);
+    $('#add_button').prop( "disabled", true);
+    $('#delete_button').prop("disabled", true);
+    $('#scraper_settings_button').prop( "disabled", true);
+    $('#select_checkbox').prop( "disabled", true);
+    $('.progress').show()
+}
 
-        $('.active').removeClass('active');
-        $this.toggleClass('active')
-      })
-    }
-
+(function get_status() {
+      var csrf = $('input[name="csrfmiddlewaretoken"]').val();
+      $.ajax({
+        type: "POST",
+        url: 'status/',
+        data: {'csrfmiddlewaretoken': csrf },
+        success: function(data) {
+          var is_job_finished = data['is_job_finished']
+          var url = data['url']
+          var success = data['success']
+          var last_update_date = data['last_update_date']
+          var total_products = data['total_products']
+          update_status(is_job_finished, url, success, last_update_date, total_products)
+        },
+        complete: function() {
+          setTimeout(get_status, 5000);
+        }
+      });
+})();
 
 });
 </script>

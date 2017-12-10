@@ -24,7 +24,7 @@
       <td id="state">None</td>
       <td id="select">
         <div class="checkbox">
-          <input type="checkbox" value="{{ website.id }}">
+          <input id="select_checkbox" type="checkbox" value="{{ website.id }}">
         </div>
       </td>
     </tr>
@@ -49,6 +49,7 @@
   });
 
   $("#start_scraper").click(function(event){
+    setDisable();
     var csrf = $('input[name="csrfmiddlewaretoken"]').val();
     $.ajax({
          type:"POST",
@@ -60,6 +61,7 @@
   });
 
   $("#stop_scraper").click(function(event){
+    setEnable();
     var csrf = $('input[name="csrfmiddlewaretoken"]').val();
     $.ajax({
          type:"POST",
