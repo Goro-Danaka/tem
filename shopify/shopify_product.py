@@ -21,14 +21,13 @@ class SProduct:
         self.lp = LoggingProvider()
 
     def get_product_info(self, product_url, category_title):
-        content = self.browser.get_html(product_url)
+        content = self.browser.get_html(product_url, use_proxy=True)
         content_tree = html.fromstring(content)
         product_meta_info = self._get_product_meta_info(content_tree, category_title, product_url)
         return product_meta_info
 
     def _get_product_meta_info(self, content_tree, category_title, product_url):
         product_title_elements = content_tree.xpath(self._product_title_xpath)
-        #product_url_elements = content_tree.xpath(self._product_url_xpath)
         product_description_elements = content_tree.xpath(self._product_description_xpath)
         product_price_elements = content_tree.xpath(self._product_price_xpath)
         product_currency_elements = content_tree.xpath(self._product_currency_xpath)
@@ -40,11 +39,6 @@ class SProduct:
             if len(product_title_elements) and \
                'content' in product_title_elements[0].attrib\
             else None
-
-        #product_url = product_url_elements[0].attrib['content'] \
-        #    if len(product_url_elements) and \
-        #       'content' in product_url_elements[0].attrib \
-        #    else None
 
         product_description = product_description_elements[0].attrib['content'] \
             if len(product_description_elements) and \
@@ -62,8 +56,6 @@ class SProduct:
             else None
 
         product_images = self._get_product_images(product_image_elements)
-
-        is_product_available = self._is_product_available(content_tree)
 
         product_sale_price = product_sale_price_elements[0].attrib['content'] \
             if len(product_sale_price_elements) and \

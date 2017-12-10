@@ -1,16 +1,15 @@
-import time
-import random
+import json
 import requests
 
 from providers.logging_provider import LoggingProvider
 
 
 class Browser:
-    _min_interval = 1
-    _max_interval = 2
     _user_agent = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
                   "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36")
     _accept_language = 'ru,en-US;q=0.9,en;q=0.8,de;q=0.7'
+
+    _proxy_service_url = 'https://api.getproxylist.com/proxy?apiKey=3d482b92d5ad93f5f6547e98db9cf977748a4f49'
 
     def __init__(self):
         self.logging_provider = LoggingProvider()
@@ -26,13 +25,32 @@ class Browser:
         except Exception as ex:
             self.logging_provider.critical('Error while init request session; Exception: %s' % ex)
 
-    def get_html(self, url):
+    def get_html(self, url, use_proxy=False):
         try:
-            sleep_interval = random.randint(self._min_interval, self._max_interval)
-            #time.sleep(sleep_interval)
-            response = self.session.get(url)
+            if use_proxy:
+                proxy_dict = self.get_proxy()
+                response = self.session.get(url, proxies=proxy_dict)
+            else:
+                response = self.session.get(url)
             html_page = response.content
             return html_page
         except Exception as ex:
             self.logging_provider.critical('Error in method get_html: url - %s\nException: \n%s' % (url, ex))
+
+    def get_proxy(self):
+        proxy_dict = {}
+        try:
+            response = self.session.get(self._proxy_service_url)
+            json_response = json.loads(response.content)
+            ip = json_response['ip']
+            port = json_response['port']
+            protocol = json_response['protocol']
+            proxy_dict = {
+                protocol: '%s://%s:%s' % (protocol, ip, port)
+            }
+        except Exception as ex:
+            self.logging_provider.warning('Can\'t get proxy. Exception: \n"%s"' % ex)
+        finally:
+            return proxy_dict
+
 
