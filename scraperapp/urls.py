@@ -23,5 +23,6 @@ urlpatterns = [
     url(r'^add/', include('polls.urls')),
     url(r'^delete/', include('polls.urls')),
     url(r'^status/', include('polls.urls')),
+    url(r'^settings/', include('polls.urls')),
     url(r'^admin/', admin.site.urls),
 ]

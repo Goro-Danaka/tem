@@ -9,7 +9,11 @@ class Browser:
                   "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36")
     _accept_language = 'ru,en-US;q=0.9,en;q=0.8,de;q=0.7'
 
-    _proxy_service_url = 'https://api.getproxylist.com/proxy?apiKey=3d482b92d5ad93f5f6547e98db9cf977748a4f49'
+    _proxy_service_url = 'https://api.getproxylist.com/proxy?apiKey=%s'
+
+    _settings = None
+
+    _proxy_api_key = None
 
     def __init__(self):
         self.logging_provider = LoggingProvider()
@@ -27,7 +31,7 @@ class Browser:
 
     def get_html(self, url, use_proxy=False):
         try:
-            if use_proxy:
+            if use_proxy and self._proxy_api_key:
                 proxy_dict = self.get_proxy()
                 response = self.session.get(url, proxies=proxy_dict)
             else:
@@ -40,7 +44,7 @@ class Browser:
     def get_proxy(self):
         proxy_dict = {}
         try:
-            response = self.session.get(self._proxy_service_url)
+            response = self.session.get(self._proxy_service_url % self._proxy_api_key)
             json_response = json.loads(response.content)
             ip = json_response['ip']
             port = json_response['port']
@@ -52,5 +56,10 @@ class Browser:
             self.logging_provider.warning('Can\'t get proxy. Exception: \n"%s"' % ex)
         finally:
             return proxy_dict
+
+    def set_settings(self, settings):
+        self._settings = settings
+        self._proxy_api_key = self._settings.proxy_api
+
 
 

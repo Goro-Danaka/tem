@@ -15,33 +15,12 @@ class ShopifySiteModel(models.Model):
 
 
 class ShopifySettingsModel(models.Model):
-    MINUTE = 'minute'
-    HOUR = 'hour'
-    DAY = 'day'
-
-    UPDATE_PERIOD_CHOICES = (
-        (MINUTE, 'Minute'),
-        (HOUR, 'Hour'),
-        (DAY, 'Day')
-    )
-
-    update_period_dict = {
-        MINUTE: 60,
-        HOUR: 3600,
-        DAY: 86400
-    }
-
     name = models.CharField(max_length=100)
     proxy_api = models.CharField(max_length=100, default='')
-    update_period = models.CharField(max_length=6,
-                                     choices=UPDATE_PERIOD_CHOICES,
-                                     default=MINUTE)
+    update_period = models.IntegerField(default=60)
 
     def __str__(self):
         return self.name
-
-    def update_period_seconds(self):
-        return self.update_period_dict[self.update_period]
 
 
 class ShopifyProductModel(models.Model):

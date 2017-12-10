@@ -8,5 +8,6 @@ urlpatterns = [
     url(r'^stop/$', views.status, name='stop'),
     url(r'^add/$', views.status, name='add'),
     url(r'^delete/$', views.status, name='delete'),
+    url(r'^settings/$', views.status, name='settings'),
     url(r'^$', views.index, name='index')
 ]

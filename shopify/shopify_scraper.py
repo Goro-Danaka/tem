@@ -29,9 +29,10 @@ class ShopifyScraper:
     _last_update_date = None
     _total_products = 0
 
-    def __init__(self):
+    def __init__(self, settings):
         self._browser = Browser()
         self._lp = LoggingProvider()
+        self.set_settings(settings)
 
     def start(self, url):
         try:
@@ -103,6 +104,9 @@ class ShopifyScraper:
             'total_products': self._total_products
         }
         return status
+
+    def set_settings(self, settings):
+        self._browser.set_settings(settings)
 
     @staticmethod
     def _get_url_domain(url):

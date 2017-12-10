@@ -8,7 +8,9 @@ from polls.models import ShopifySettingsModel
 
 from shopify.shopify_scraper import ShopifyScraper
 
-_scraper = ShopifyScraper()
+
+scraper_settings = ShopifySettingsModel.objects.order_by('-name')
+scraper = ShopifyScraper(scraper_settings[0])
 
 
 def index(request):
@@ -18,16 +20,17 @@ def index(request):
             '/start/': start,
             '/stop/': stop,
             '/add/': add,
+            '/settings/': settings,
             '/delete/': delete
         }
         return request_paths[request.path](request)
 
     websites_list = ShopifySiteModel.objects.order_by('-name')
-    settings = ShopifySettingsModel.objects.order_by('-name')[:1]
+    settings_list = ShopifySettingsModel.objects.order_by('-name')
 
     context = {
         'website_list': websites_list,
-        'settings': settings
+        'settings_list': settings_list
     }
 
     return HttpResponse(render(request, 'index.html', context))
@@ -47,7 +50,7 @@ def add(request):
                 is_exist = True
                 break
         if not is_exist:
-            is_shopify_site = _scraper.is_shopify_site(website_url)
+            is_shopify_site = scraper.is_shopify_site(website_url)
             if is_shopify_site:
                 new_website = ShopifySiteModel(name=website_name, url=website_url)
                 new_website.save()
@@ -88,13 +91,18 @@ def settings(request):
     response = HttpResponse(content_type='application/json')
     result = {}
     try:
-        ids_to_delete = request.POST.getlist('ids_to_delete[]')
-        for id_to_delete in ids_to_delete:
-            website = ShopifySiteModel.objects.get(id=id_to_delete)
-            website.delete()
+        settings_list = ShopifySettingsModel.objects.order_by('-name')
+        proxy_api_key = request.POST['proxy_api_key']
+        update_period = request.POST['update_period']
+        for settings_entry in settings_list:
+            settings_entry.proxy_api = proxy_api_key
+            settings_entry.update_period = int(update_period)
+            settings_entry.save()
+            scraper.set_settings(settings_entry)
         result['success'] = True
     except Exception as ex:
         result['success'] = False
+        result['message'] = 'Exception was thrown: "%s"' % ex
     finally:
         json_result = json.dumps(result)
         response.write(json_result)
@@ -107,7 +115,7 @@ def start(request):
     response = HttpResponse(content_type='application/json')
     try:
         for website in websites_list:
-            _scraper.start(website.url)
+            scraper.start(website.url)
         result['success'] = True
     except Exception as ex:
         result['success'] = False
@@ -120,12 +128,12 @@ def start(request):
 
 def stop(request):
     response = HttpResponse(content_type='application/json')
-    _scraper.stop()
+    scraper.stop()
     return response
 
 
 def status(request):
-    json_status = json.dumps(_scraper.get_status())
+    json_status = json.dumps(scraper.get_status())
     response = HttpResponse(content_type='application/json')
     response.write(json_status)
     return response
