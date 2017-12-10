@@ -44,3 +44,19 @@ class ShopifySettingsModel(models.Model):
         return self.update_period_dict[self.update_period]
 
 
+class ShopifyProductModel(models.Model):
+    website_id = models.IntegerField(default=0)
+    title = models.CharField(max_length=200, default='')
+    category = models.CharField(max_length=200, default='')
+    url = models.CharField(max_length=200, default='')
+    description = models.CharField(max_length=200, default='')
+    price = models.CharField(max_length=200, default='')
+    sale_price = models.CharField(max_length=200, default='')
+    currency = models.CharField(max_length=200, default='')
+    images = models.CharField(max_length=2000, default='')
+    available = models.CharField(max_length=200, default='')
+
+    def __str__(self):
+        return self.title
+
+

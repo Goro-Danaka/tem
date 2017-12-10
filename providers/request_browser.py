@@ -29,7 +29,7 @@ class Browser:
     def get_html(self, url):
         try:
             sleep_interval = random.randint(self._min_interval, self._max_interval)
-            time.sleep(sleep_interval)
+            #time.sleep(sleep_interval)
             response = self.session.get(url)
             html_page = response.content
             return html_page

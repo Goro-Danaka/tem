@@ -20,13 +20,13 @@ class SProduct:
         self.browser = browser
         self.lp = LoggingProvider()
 
-    def get_product_info(self, product_url):
+    def get_product_info(self, product_url, category_title):
         content = self.browser.get_html(product_url)
         content_tree = html.fromstring(content)
-        product_meta_info = self._get_product_meta_info(content_tree)
+        product_meta_info = self._get_product_meta_info(content_tree, category_title)
         return product_meta_info
 
-    def _get_product_meta_info(self, content_tree):
+    def _get_product_meta_info(self, content_tree, category_title):
         product_title_elements = content_tree.xpath(self._product_title_xpath)
         product_url_elements = content_tree.xpath(self._product_url_xpath)
         product_description_elements = content_tree.xpath(self._product_description_xpath)
@@ -72,13 +72,13 @@ class SProduct:
 
         product_meta_info = {
             'Title': product_title,
+            'Category': category_title,
             'Url': product_url,
             'Description': product_description,
             'Price': product_price,
             'Sale price': product_sale_price,
             'Currency': product_currency,
-            'Images': product_images,
-            'Available': is_product_available
+            'Images': product_images
         }
 
         self.lp.info('Scraped product: %s' % product_url)

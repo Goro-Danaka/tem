@@ -48,7 +48,7 @@
         $('#delete_button').prop('disabled', true);
   });
 
-  $("#start_button").click(function(event){
+  $("#start_scraper").click(function(event){
     var csrf = $('input[name="csrfmiddlewaretoken"]').val();
     $.ajax({
          type:"POST",
@@ -59,7 +59,7 @@
     });
   });
 
-  $("#stop_button").click(function(event){
+  $("#stop_scraper").click(function(event){
     var csrf = $('input[name="csrfmiddlewaretoken"]').val();
     $.ajax({
          type:"POST",

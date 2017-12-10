@@ -3,51 +3,73 @@ import re
 from lxml import html
 from config.config import defaults
 from providers.logging_provider import LoggingProvider
+from bs4 import BeautifulSoup
 
 
 class SCategories:
 
-    _categories_links_xpath = '//a[@class="collection-grid__item-link collection-collage__item-wrapper"]'
-    _categories_titles_xpath = '//span[@class="collection-grid__item-title"]'
+    _categories_title_xpath = '//meta[@property="og:title"]'
+    _category_sitemap_url_tail = '/sitemap_collections_1.xml'
+
+    _in_progress = False
 
     def __init__(self, browser):
         self.lp = LoggingProvider()
         self.browser = browser
 
     def get_categories(self, url):
+        categories = list()
         try:
-            url += defaults['products_url']
-            content = self.browser.get_html(url)
-            content_tree = html.fromstring(content)
-            categories_links = content_tree.xpath(self._categories_links_xpath)
-            categories_titles = content_tree.xpath(self._categories_titles_xpath)
-            categories = self._get_categories_info(categories_links, categories_titles)
+            self._in_progress = True
+            categories_urls = self._get_categories_sitemap(url)
+            categories = self._get_categories_info(categories_urls)
         except Exception as ex:
             self.lp.critical('Can\'t get categories. Url: %s; Exception: \n%s' % (url, ex))
         finally:
+            self._in_progress = False
             return categories
 
-    def _get_categories_info(self, categories_links, categories_titles):
+    def _get_categories_sitemap(self, url):
+        categories_urls = list()
+        try:
+            sitemap_url = url + self._category_sitemap_url_tail
+            content = self.browser.get_html(sitemap_url)
+            soup = BeautifulSoup(content)
+            sitemap_tags = soup.find_all('url')
+            for sitemap_tag in sitemap_tags:
+                categories_urls.append(sitemap_tag.findNext("loc").text)
+        except Exception as ex:
+            self.lp.critical('Can\'t get categories from sitemap. Sitemap url: "%s". Exception: \n"%s"'
+                             % (sitemap_url, ex))
+        finally:
+            return categories_urls
+
+    def _get_categories_info(self, categories_urls):
         categories_info = list()
         i = 0
         try:
-            categories_links_length = len(categories_links)
-            categories_titles_length = len(categories_titles)
-            if categories_links_length != categories_titles_length:
-                self.lp.warning('Categories links and name has different sizes.')
-            while i < categories_links_length:
-                category_title = categories_titles[i].text
-                category_link = categories_links[i].attrib['href']
+            for category_url in categories_urls:
+                if not self._in_progress:
+                    return categories_info
+                content = self.browser.get_html(category_url)
+                content_tree = html.fromstring(content)
+                category_title_elements = content_tree.xpath(self._categories_title_xpath)
+                category_title = category_title_elements[0].attrib['content'] \
+                    if len(category_title_elements) and \
+                       'content' in category_title_elements[0].attrib \
+                    else None
                 category_info = {
                     'title': category_title,
-                    'link': category_link
+                    'link': category_url
                 }
                 categories_info.append(category_info)
-                i += 1
         except Exception as ex:
             self.lp.critical('Can\'t get categories info.'
-                             ' links: \n%s; titles: \n%s; Exception: \n%s'
-                             % (categories_links, categories_titles, ex))
+                             ' links: \n%s; Exception: \n%s'
+                             % (categories_urls, ex))
         finally:
             return categories_info
+
+    def stop(self):
+        self._in_progress = False
 
