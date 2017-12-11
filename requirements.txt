@@ -1,11 +1,6 @@
-gspread==0.6.2
 requests==2.18.4
 requests-toolbelt==0.7.0
 lxml==4.0.0
-oauth2client==4.1.2
-pyOpenSSL==17.5.0
-google-auth==1.2.1
-google-auth-oauthlib==0.2.0
 Django==1.11.7
 django-bootstrap3==9.1.0
 django-jquery==3.1.0
@@ -13,4 +8,3 @@ Django-Bootstrap3-Validator==0.3.3
 gunicorn==19.7.1
 whitenoise==3.3.1
 beautifulsoup4==4.6.0
-mongoengine==0.8.0
