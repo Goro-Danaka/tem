@@ -45,7 +45,7 @@ class Browser:
         proxy_dict = {}
         try:
             response = self.session.get(self._proxy_service_url % self._proxy_api_key)
-            json_response = json.loads(response.content)
+            json_response = json.loads(response.text)
             ip = json_response['ip']
             port = json_response['port']
             protocol = json_response['protocol']
