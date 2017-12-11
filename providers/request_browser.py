@@ -58,6 +58,8 @@ class Browser:
             return proxy_dict
 
     def set_settings(self, settings):
+        if not settings:
+            return
         self._settings = settings
         self._proxy_api_key = self._settings.proxy_api
 

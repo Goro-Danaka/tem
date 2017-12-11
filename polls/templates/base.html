@@ -28,8 +28,8 @@ $(document).ready(function() {
 {% block modal_buttons_handlers %}{% endblock %}
 {% block table_scripts %}{% endblock %}
 
-function update_status(is_job_finished, url, success, last_update_date, total_products){
-  if (is_job_finished) {
+function update_status(in_progress, is_job_finished, url, success, last_update_date, total_products){
+  if (!in_progress) {
         setEnable();
   }
   else {
@@ -73,17 +73,33 @@ function setDisable(){
         data: {'csrfmiddlewaretoken': csrf },
         success: function(data) {
           var is_job_finished = data['is_job_finished']
+          var in_progress = data['in_progress']
           var url = data['url']
           var success = data['success']
           var last_update_date = data['last_update_date']
           var total_products = data['total_products']
-          update_status(is_job_finished, url, success, last_update_date, total_products)
+          update_status(in_progress, is_job_finished, url, success, last_update_date, total_products);
         },
         complete: function() {
           setTimeout(get_status, 5000);
         }
       });
 })();
+
+
+var time = new Date().getTime();
+ $(document.body).bind("mousemove keypress", function(e) {
+     time = new Date().getTime();
+ });
+
+ function refresh() {
+     if(new Date().getTime() - time >= 60000)
+         window.location.reload(true);
+     else
+         setTimeout(refresh, 10000);
+ }
+
+ setTimeout(refresh, 10000);
 
 });
 </script>

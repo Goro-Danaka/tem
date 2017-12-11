@@ -9,7 +9,6 @@
       <th>Total products</th>
       <th>Last update</th>
       <th>Last status</th>
-      <th>State</th>
       <th>Select</th>
     </tr>
   </thead>
@@ -21,7 +20,6 @@
       <td id="total_products">{{ website.total_products }}</td>
       <td id="last_update_date">{{ website.last_update_date }}</td>
       <td id="last_status">{{ website.last_status }}</td>
-      <td id="state">None</td>
       <td id="select">
         <div class="checkbox">
           <input id="select_checkbox" type="checkbox" value="{{ website.id }}">
@@ -57,6 +55,9 @@
          data: {
             'csrfmiddlewaretoken': csrf,
          },
+         success: function (response) {
+            location.reload();
+         }
     });
   });
 

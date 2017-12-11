@@ -34,7 +34,8 @@ class ShopifyScraper:
         self._lp = LoggingProvider()
         self.set_settings(settings)
 
-    def start(self, url):
+    def scrape(self, url):
+        all_products_list = list()
         try:
             self.set_init_states()
             self._in_progress = True
@@ -57,6 +58,7 @@ class ShopifyScraper:
         finally:
             self._last_update_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             self._total_products = len(all_products_list)
+            return all_products_list
 
     def set_init_states(self):
         self._in_progress = False
@@ -83,7 +85,7 @@ class ShopifyScraper:
 
     def is_shopify_site(self, url):
         robots_url = url + self._robots_url_tile
-        content = str(self._browser.get_html(robots_url))
+        content = str(self._browser.get_html(robots_url, use_proxy=True))
         if len(re.findall(pattern=self._is_shopify_regex, string=content)):
             return True
         return False

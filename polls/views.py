@@ -1,16 +1,20 @@
 import json
+import time
 
 from django.http import HttpResponse
 from django.shortcuts import render
 
-from polls.models import ShopifySiteModel
+from polls.models import ShopifyProductModel
 from polls.models import ShopifySettingsModel
+from polls.models import ShopifySiteModel
 
 from shopify.shopify_scraper import ShopifyScraper
+from datetime import datetime
 
 
 scraper_settings = ShopifySettingsModel.objects.order_by('-name')
 scraper = ShopifyScraper(scraper_settings[0])
+in_progress = False
 
 
 def index(request):
@@ -110,12 +114,12 @@ def settings(request):
 
 
 def start(request):
-    websites_list = ShopifySiteModel.objects.order_by('-name')
+    global in_progress
     result = {}
     response = HttpResponse(content_type='application/json')
     try:
-        for website in websites_list:
-            scraper.start(website.url)
+        in_progress = True
+        scraper_products()
         result['success'] = True
     except Exception as ex:
         result['success'] = False
@@ -123,18 +127,87 @@ def start(request):
     finally:
         json_result = json.dumps(result)
         response.write(json_result)
+        in_progress = False
         return response
 
 
 def stop(request):
+    global in_progress
     response = HttpResponse(content_type='application/json')
     scraper.stop()
+    in_progress = False
     return response
 
 
 def status(request):
-    json_status = json.dumps(scraper.get_status())
+    global in_progress
+    scraper_status = scraper.get_status()
+    scraper_status['in_progress'] = in_progress
+    json_status = json.dumps(scraper_status)
     response = HttpResponse(content_type='application/json')
     response.write(json_status)
     return response
+
+
+def create_entries(all_products_info, website_id):
+    try:
+        for product_info in all_products_info:
+            products_count = ShopifyProductModel.objects.filter(url=product_info['Url']).count()
+            if products_count:
+                continue
+            entry = ShopifyProductModel(
+                website_id=website_id,
+                title=product_info['Title'] if product_info['Title'] else '',
+                category=product_info['Category'] if product_info['Category'] else '',
+                url=product_info['Url'] if product_info['Url'] else '',
+                description=product_info['Description'] if product_info['Description'] else '',
+                price=product_info['Price'] if product_info['Price'] else '',
+                sale_price=product_info['Sale price'] if product_info['Sale price'] else '',
+                currency=product_info['Currency'] if product_info['Currency'] else '',
+                images=get_images_string(product_info['Images']))
+            entry.save()
+    except Exception as ex:
+        pass
+
+
+def update_website_info(website_id, scraper_status):
+    try:
+        website = ShopifySiteModel.objects.get(id=website_id)
+        website.total_products = scraper_status['total_products']
+        website.last_update_date = datetime.now()
+        website.last_status = 'Success' if scraper_status['success'] else 'Failed'
+        website.save()
+    except Exception as ex:
+        pass
+
+
+def get_images_string(images):
+    result = ''
+    for image in images:
+        result += '%s;' % image
+    return result
+
+
+def scraper_products():
+    global in_progress
+
+    while True:
+        if not in_progress:
+            return
+        websites_list = ShopifySiteModel.objects.order_by('-name')
+        settings_list = ShopifySettingsModel.objects.order_by('-name')
+
+        update_period = 0
+
+        for settings_item in settings_list:
+            update_period = settings_item.update_period
+
+        for website in websites_list:
+            if in_progress:
+                all_products_info = scraper.scrape(website.url)
+                scraper_status = scraper.get_status()
+                create_entries(all_products_info, website_id=website.id)
+                update_website_info(website_id=website.id, scraper_status=scraper_status)
+        time.sleep(update_period)
+
 
