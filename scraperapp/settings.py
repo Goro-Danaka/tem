@@ -52,7 +52,9 @@ INSTALLED_APPS = [
     'polls',
     'bootstrap3',
     'jquery',
-    'shopify.shopify_scraper'
+    'shopify.shopify_scraper',
+    'providers.logging_provider',
+    'providers.google_sheets'
 ]
 
 MIDDLEWARE = [
