@@ -30,7 +30,7 @@ class GoogleSheets:
                 self.sheet = self.client.open(sheet_name)
             is_worksheet_exist = self._is_worksheet_exist(name)
             if not is_worksheet_exist:
-                self.worksheet = self.sheet.add_worksheet(title=name, rows=10000, cols=8)
+                self.worksheet = self.sheet.add_worksheet(title=name, rows=100000, cols=8)
             else:
                 self.worksheet = self.sheet.worksheet(title=name)
         except SpreadsheetNotFound as SheetException:
@@ -57,7 +57,6 @@ class GoogleSheets:
         next_id = len(self.worksheet.get_all_values()) + 1 if not len(cell_list) else cell_list[0].row
         self.update_cell(next_id, product_info)
 
-
     @staticmethod
     def get_images_string(images):
         result = ''
@@ -68,9 +67,9 @@ class GoogleSheets:
     def _is_worksheet_exist(self, name):
         try:
             is_exist = True
-            self.sheet.worksheet(name)
+            worksheet = self.sheet.worksheet(name)
         except WorksheetNotFound as WorkSheetException:
-            self.lp.warning('Worksheet not exist. It will be created.' % WorkSheetException)
             is_exist = False
+            self.lp.warning('Worksheet not exist. It will be created.' % WorkSheetException)
         finally:
             return is_exist

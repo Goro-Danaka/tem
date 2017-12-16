@@ -159,8 +159,8 @@ def create_entries(all_products_info, website_id, website_name):
         for product_info in all_products_info:
             products = ShopifyProductModel.objects.filter(url=product_info['Url'])
             products_count = products.count()
+            google_sheets.update(product_info)
             if products_count:
-                google_sheets.update(product_info)
                 continue
             entry = ShopifyProductModel(
                 website_id=website_id,
@@ -173,7 +173,6 @@ def create_entries(all_products_info, website_id, website_name):
                 currency=product_info['Currency'] if product_info['Currency'] else '',
                 images=get_images_string(product_info['Images']))
             entry.save()
-            google_sheets.insert(entry.id, product_info)
     except Exception as ex:
         lp.warning('Some problem while creating entry. Exception: "%s"' % ex)
 
