@@ -8,12 +8,16 @@ from polls.models import ShopifyProductModel
 from polls.models import ShopifySettingsModel
 from polls.models import ShopifySiteModel
 
+from providers.logging_provider import LoggingProvider
+from providers.google_sheets import GoogleSheets
 from shopify.shopify_scraper import ShopifyScraper
 from datetime import datetime
 
 
 scraper_settings = ShopifySettingsModel.objects.order_by('-name')
 scraper = ShopifyScraper(scraper_settings[0])
+google_sheets = GoogleSheets()
+lp = LoggingProvider()
 in_progress = False
 
 
@@ -149,11 +153,14 @@ def status(request):
     return response
 
 
-def create_entries(all_products_info, website_id):
+def create_entries(all_products_info, website_id, website_name):
     try:
+        google_sheets.set_worksheet(website_name)
         for product_info in all_products_info:
-            products_count = ShopifyProductModel.objects.filter(url=product_info['Url']).count()
+            products = ShopifyProductModel.objects.filter(url=product_info['Url'])
+            products_count = products.count()
             if products_count:
+                google_sheets.update(product_info)
                 continue
             entry = ShopifyProductModel(
                 website_id=website_id,
@@ -166,8 +173,9 @@ def create_entries(all_products_info, website_id):
                 currency=product_info['Currency'] if product_info['Currency'] else '',
                 images=get_images_string(product_info['Images']))
             entry.save()
+            google_sheets.insert(entry.id, product_info)
     except Exception as ex:
-        pass
+        lp.warning('Some problem while creating entry. Exception: "%s"' % ex)
 
 
 def update_website_info(website_id, scraper_status):
@@ -206,7 +214,7 @@ def scraper_products():
             if in_progress:
                 all_products_info = scraper.scrape(website.url)
                 scraper_status = scraper.get_status()
-                create_entries(all_products_info, website_id=website.id)
+                create_entries(all_products_info, website_id=website.id, website_name=website.name)
                 update_website_info(website_id=website.id, scraper_status=scraper_status)
         time.sleep(update_period)
 

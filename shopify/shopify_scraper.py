@@ -9,7 +9,6 @@ from shopify.shopify_product import SProduct
 
 from providers.logging_provider import LoggingProvider
 from providers.request_browser import Browser
-from providers.google_sheets import GoogleSheets
 
 
 class ShopifyScraper:
@@ -31,7 +30,6 @@ class ShopifyScraper:
     _total_products = 0
 
     def __init__(self, settings):
-        self._sheets = GoogleSheets()
         self._browser = Browser()
         self._lp = LoggingProvider()
         self.set_settings(settings)
