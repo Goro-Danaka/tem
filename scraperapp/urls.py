@@ -15,7 +15,6 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from polls.api.v1.routers import api_router
 
 urlpatterns = [
     url(r'^$', include('polls.urls')),
@@ -25,6 +24,5 @@ urlpatterns = [
     url(r'^delete/', include('polls.urls')),
     url(r'^status/', include('polls.urls')),
     url(r'^settings/', include('polls.urls')),
-    url(r'^admin/', admin.site.urls),
-    url(r'api/v1/', include(api_router.urls))
+    url(r'^admin/', admin.site.urls)
 ]

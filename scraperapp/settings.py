@@ -43,8 +43,8 @@ STATICFILES_DIRS = (
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
     'django.contrib.auth',
+    'django.contrib.admin',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -52,10 +52,8 @@ INSTALLED_APPS = [
     'polls',
     'bootstrap3',
     'jquery',
-    'rest_framework',
     'shopify.shopify_scraper',
-    'providers.logging_provider',
-    'providers.google_sheets'
+    'providers.logging_provider'
 ]
 
 MIDDLEWARE = [
@@ -83,7 +81,7 @@ TEMPLATES = [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+                'django.contrib.messages.context_processors.messages'
             ],
         },
     },

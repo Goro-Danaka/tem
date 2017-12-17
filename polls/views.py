@@ -9,14 +9,12 @@ from polls.models import ShopifySettingsModel
 from polls.models import ShopifySiteModel
 
 from providers.logging_provider import LoggingProvider
-from providers.google_sheets import GoogleSheets
 from shopify.shopify_scraper import ShopifyScraper
 from datetime import datetime
 
 
 scraper_settings = ShopifySettingsModel.objects.order_by('-name')
 scraper = ShopifyScraper(scraper_settings[0])
-google_sheets = GoogleSheets()
 lp = LoggingProvider()
 in_progress = False
 
