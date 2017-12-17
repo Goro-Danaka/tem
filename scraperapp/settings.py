@@ -43,6 +43,7 @@ STATICFILES_DIRS = (
 # Application definition
 
 INSTALLED_APPS = [
+    'bootstrap_admin',
     'django.contrib.auth',
     'django.contrib.admin',
     'django.contrib.contenttypes',
