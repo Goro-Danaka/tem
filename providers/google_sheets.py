@@ -53,9 +53,12 @@ class GoogleSheets:
         self.worksheet.update_cell(next_id, 8, GoogleSheets.get_images_string(product_info['Images']))
 
     def update(self, product_info):
-        cell_list = self.worksheet.findall(product_info['Url'])
-        next_id = len(self.worksheet.get_all_values()) + 1 if not len(cell_list) else cell_list[0].row
-        self.update_cell(next_id, product_info)
+        try:
+            cell_list = self.worksheet.findall(product_info['Url'])
+            next_id = len(self.worksheet.get_all_values()) + 1 if not len(cell_list) else cell_list[0].row
+            self.update_cell(next_id, product_info)
+        except Exception as ex:
+            pass
 
     @staticmethod
     def get_images_string(images):

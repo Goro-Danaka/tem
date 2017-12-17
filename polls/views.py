@@ -159,11 +159,11 @@ def create_entries(all_products_info, website_id, website_name):
         for product_info in all_products_info:
             products = ShopifyProductModel.objects.filter(url=product_info['Url'])
             products_count = products.count()
-            google_sheets.update(product_info)
+            #google_sheets.update(product_info)
             if products_count:
                 continue
             entry = ShopifyProductModel(
-                website_id=website_id,
+                website=ShopifySiteModel.objects.filter(id=website_id)[0],
                 title=product_info['Title'] if product_info['Title'] else '',
                 category=product_info['Category'] if product_info['Category'] else '',
                 url=product_info['Url'] if product_info['Url'] else '',
